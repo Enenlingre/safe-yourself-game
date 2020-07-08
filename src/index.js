@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Application, Loader, Sprite } from 'pixi.js';
 import hero from './hero.png';
 
 
@@ -6,7 +6,7 @@ console.log(1);
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container.
-const app = new PIXI.Application();
+const app = new Application();
 
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
@@ -17,15 +17,42 @@ app.renderer.resize(window.innerWidth, window.innerHeight);
 // can then insert into the DOM.
 document.body.appendChild(app.view);
 
-const loader = new PIXI.Loader();
+const loader = new Loader();
 
 loader.add(hero)
   .load(setup);
 
+let sprite;
+
+let state;
+
 function setup() {
-  let sprite = new PIXI.Sprite(
+  sprite = new Sprite(
     loader.resources[hero].texture
   );
+  sprite.vx = 0;
+  sprite.vy = 0;
+
+  app.stage.addChild(sprite);
+
+  state = play;
+
+  app.ticker.add(delta => gameLoop(delta));
+}
+
+function gameLoop(delta){
+
+  state(delta);
+}
+
+function play() {
+  sprite.vx = 1;
+  sprite.vy = 1;
+
+  //Apply the velocity values to the cat's 
+  //position to make it move
+  sprite.x += sprite.vx;
+  sprite.y += sprite.vy;
 }
  
 // // load the texture we need
