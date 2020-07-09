@@ -1,4 +1,5 @@
 import { Application, Loader, Sprite } from 'pixi.js';
+import { createKeybord } from './createKeybord';
 import hero from './hero.png';
 
 
@@ -34,6 +35,11 @@ function setup() {
   sprite.vy = 0;
 
   app.stage.addChild(sprite);
+
+  const keyboard = createKeybord()
+    .addKey('KeyW', () => console.log('up'), () => {})
+    .addKey('KeyS', () => console.log('down'), () => {})
+    .subscrube();
 
   state = play;
 
