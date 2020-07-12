@@ -37,8 +37,29 @@ function setup() {
   app.stage.addChild(sprite);
 
   const keyboard = createKeybord()
-    .addKey('KeyW', () => console.log('up'), () => {})
-    .addKey('KeyS', () => console.log('down'), () => {})
+    .addKey('KeyW', () => {
+      sprite.vy = -1;
+      console.log('erer');
+    }, () => {
+      sprite.vy = 0;
+    })
+    .addKey('KeyS', () => {
+      sprite.vy = 1
+    }, () => {
+      sprite.vy = 0;
+    })
+    .addKey('KeyA', () => {
+      sprite.vx = -1;
+      console.log('erer');
+    }, () => {
+      sprite.vx = 0;
+    })
+    .addKey('KeyD', () => {
+      sprite.vx = +1;
+      console.log('erer');
+    }, () => {
+      sprite.vx = 0;
+    })
     .subscrube();
 
   state = play;
@@ -52,9 +73,6 @@ function gameLoop(delta){
 }
 
 function play() {
-  sprite.vx = 1;
-  sprite.vy = 1;
-
   //Apply the velocity values to the cat's 
   //position to make it move
   sprite.x += sprite.vx;
