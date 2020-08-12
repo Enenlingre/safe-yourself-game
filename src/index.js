@@ -1,6 +1,8 @@
 import { Application, Loader, Sprite, Container, AnimatedSprite, Texture, Rectangle, BaseTexture } from 'pixi.js';
 import { createKeybord } from './createKeybord';
 import hero from './sprites/hero.png';
+import hairy from './sprites/hairy.png';
+import bald from './sprites/bald.png';
 import background from './sprites/background.jpg';
 
 
@@ -46,19 +48,52 @@ function setup() {
   sprite.vy = 0;
 
   gameScene.addChild(sprite);
-  sprite.play();
+  
+  let numberOfBlobs = 2,    spacing = 48,    xOffset = 150,    speed = 2,    direction = 1;
+const blobs = [];
+  for (let i = 0; i < numberOfBlobs; i++) {
+    //Make a blob  
+    let blob = getAnimatedSprite(i === 0 ? hairy : bald);
+    //Space each blob horizontally according to the `spacing` value.
+    //`xOffset` determines the point from the left of the screen
+    //at which the first blob should be added  
+    let x = spacing * i + xOffset;
+    //Give the blob a random y position  
+    const randomInt = (min, max) => (Math.random() * max) + min;
+    let y = randomInt(0, app.stage.height - blob.height);
+    //Set the blob's position  
+    blob.x = x;  
+    blob.y = y;
+    //Set the blob's vertical velocity. `direction` will be either `1` or
+    //`-1`. `1` means the enemy will move down and `-1` means the blob will
+    //move up. Multiplying `direction` by `speed` determines the blob's
+    //vertical direction  
+    blob.vy = speed * direction;
+    //Reverse the direction for the next blob  
+    direction *= -1;
+    //Push the blob into the `blobs` array  
+    blobs.push(blob);
+    //Add the blob to the `gameScene`  
+    gameScene.addChild(blob);
+  }
+  
+  
+    // sprite.play();
 
   const keyboard = createKeybord()
     .addKey('KeyW', () => {
       sprite.vy = -1;
-      console.log('erer');
+      sprite.play();
     }, () => {
       sprite.vy = 0;
+      sprite.stop();
     })
     .addKey('KeyS', () => {
       sprite.vy = 1
+      sprite.gotoAndPlay(1);
     }, () => {
       sprite.vy = 0;
+      sprite.gotoAndStop(0);
     })
     .addKey('KeyA', () => {
       console.log(sprite);
@@ -159,27 +194,3 @@ function getAnimatedSprite(src) {
 
   return animatedSprite;
 }
- 
-// // load the texture we need
-// PIXI.loader.add('ss','/Users/develop/Documents/save-yourself-game/dist/hero.png').load((loader, resources) => {
- 
-//     // This creates a texture from a 'bunny.png' image.
-//     const bunny = new PIXI.Sprite(resources['/Users/develop/Documents/save-yourself-game/dist/hero.png'].texture);
- 
-//     // Setup the position of the bunny
-//     bunny.x = app.renderer.width / 2;
-//     bunny.y = app.renderer.height / 2;
- 
-//     // Rotate around the center
-//     bunny.anchor.x = 0.5;
-//     bunny.anchor.y = 0.5;
- 
-//     // Add the bunny to the scene we are building.
-//     app.stage.addChild(bunny);
- 
-//     // Listen for frame updates
-//     app.ticker.add(() => {
-//          // each frame we spin the bunny around a bit
-//         bunny.rotation += 0.01;
-//     });
-// });
