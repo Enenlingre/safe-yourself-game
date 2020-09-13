@@ -29,7 +29,7 @@ loader.add(background)
 let sprite, gameScene, gameOverScene;
 
 let state;
-
+const blobs = [];
 function setup() {
   gameScene = new Container();
   app.stage.addChild(gameScene);
@@ -50,7 +50,7 @@ function setup() {
   gameScene.addChild(sprite);
   
   let numberOfBlobs = 2,    spacing = 48,    xOffset = 150,    speed = 2,    direction = 1;
-const blobs = [];
+
   for (let i = 0; i < numberOfBlobs; i++) {
     //Make a blob  
     let blob = getAnimatedSprite(i === 0 ? hairy : bald);
@@ -120,62 +120,82 @@ function gameLoop(delta){
   state(delta);
 }
 
+const CONTAINER = { x: 5, y: 10, height: 490, width: 495 };
+let v = [0.5, 0.5];
+const randomInt = (min, max) => Math.round(min + Math.random() * (max - min));
+// setInterval(() => v = randomInt(0.5, 1), 5000);
+let inddd = null;
+let count = 0;
+let imt = randomInt(0, 1);
 function play() {
   //Apply the velocity values to the cat's 
   //position to make it move
   sprite.x += sprite.vx;
   sprite.y += sprite.vy;
+
+  contain(sprite, CONTAINER);
+   
+  blobs.forEach((blob, i) => {
+    // console.log(blobs[0].x, blobs[1].x, i);
+    // const v = randomInt(0, 1);
+    console.log(inddd);
+    if (checkCollisionRect(blobs[0], blobs[1]) && inddd === null) {inddd = i;
+      // blob.x -= sprite.x  > blob.x ? 0.5 : sprite.x == blob.x ? 0 : -0.5;
+      // blob.y -= sprite.y  > blob.y ? 0.5 : sprite.y == blob.y ? 0 : -0.5;
+      imt = randomInt(0, 1);
+      const index = i === 0 ? 1 : 0;
+      if (imt) 
+      blob.x += blob.x > blobs[index].x ? 1 : -1;
+      else blob.y += blob.y > blobs[index].y ? 1 : -1;
+    } else {
+      blob.x += sprite.x  > blob.x ? v[i] : sprite.x == blob.x ? 0 : -v[i];
+      blob.y += sprite.y  > blob.y ? v[i] : sprite.y == blob.y ? 0 : -v[i];
+    }
+    if (inddd === i && count < 100) {
+      const index = i === 0 ? 1 : 0;
+      if (imt) 
+      blob.x += blob.x > blobs[index].x ? 1 : -1
+      else blob.y += blob.y > blobs[index].y ? 1 : -1
+      count++;
+    } 
+    if (inddd === i && count === 100) {
+      count = 0;
+      inddd = null;
+    }
+  });
 }
 
-function hitTestRectangle(r1, r2) {
-
-  //Define the variables we'll need to calculate
-  let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
-
-  //hit will determine whether there's a collision
-  hit = false;
-
-  //Find the center points of each sprite
-  r1.centerX = r1.x + r1.width / 2;
-  r1.centerY = r1.y + r1.height / 2;
-  r2.centerX = r2.x + r2.width / 2;
-  r2.centerY = r2.y + r2.height / 2;
-
-  //Find the half-widths and half-heights of each sprite
-  r1.halfWidth = r1.width / 2;
-  r1.halfHeight = r1.height / 2;
-  r2.halfWidth = r2.width / 2;
-  r2.halfHeight = r2.height / 2;
-
-  //Calculate the distance vector between the sprites
-  vx = r1.centerX - r2.centerX;
-  vy = r1.centerY - r2.centerY;
-
-  //Figure out the combined half-widths and half-heights
-  combinedHalfWidths = r1.halfWidth + r2.halfWidth;
-  combinedHalfHeights = r1.halfHeight + r2.halfHeight;
-
-  //Check for a collision on the x axis
-  if (Math.abs(vx) < combinedHalfWidths) {
-
-    //A collision might be occurring. Check for a collision on the y axis
-    if (Math.abs(vy) < combinedHalfHeights) {
-
-      //There's definitely a collision happening
-      hit = true;
-    } else {
-
-      //There's no collision on the y axis
-      hit = false;
-    }
-  } else {
-
-    //There's no collision on the x axis
-    hit = false;
+function contain(sprite, container) {
+  const collision = new Set();
+  //Left
+  if (sprite.x < container.x) {
+    sprite.x = container.x;
+    collision.add("left"); 
+  }
+  //Top
+  if (sprite.y < container.y) {
+    sprite.y = container.y;
+    collision.add("top");
+  }
+  //Right
+  if (sprite.x + sprite.width > container.width) {
+    sprite.x = container.width - sprite.width;
+    collision.add("right");
+  }
+  //Bottom
+  if (sprite.y + sprite.height > container.height) {
+    sprite.y = container.height - sprite.height;
+    collision.add("bottom");
   }
 
-  //`hit` will be either `true` or `false`
-  return hit;
+  return collision;
+}
+
+function checkCollisionRect(r1, r2) {
+  const collizionX = Math.min(r1.x + r1.width, r2.x + r2.width) - Math.max(r1.x, r2.x) >= 0;
+  const collizionY = Math.min(r1.y + r1.height, r2.y + r2.height) - Math.max(r1.y, r2.y) >= 0;
+  
+  return collizionX && collizionY;
 };
 
 function getAnimatedSprite(src) {
