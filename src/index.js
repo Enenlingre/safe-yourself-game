@@ -1,9 +1,13 @@
-import { Application, Loader, Sprite, Container, AnimatedSprite, Texture, Rectangle, BaseTexture } from 'pixi.js';
+import { Application, Loader, Sprite, Container, Text } from 'pixi.js';
+import { getAnimatedSprite } from './getAnimatedSprite';
 import { createKeybord } from './createKeybord';
+import { contain } from './contain';
+import { checkCollisionRect } from './checkCollisionRect';
 import hero from './sprites/hero.png';
 import hairy from './sprites/hairy.png';
 import bald from './sprites/bald.png';
 import background from './sprites/background.jpg';
+import { initGreetingScene } from './greetingScene';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
@@ -28,12 +32,14 @@ const loader = new Loader();
 loader.add(background)
   .load(setup);
 
-let sprite, gameScene, gameOverScene;
+let sprite, greetingScene, gameScene, gameOverScene;
 
 let state;
-const blobs = [];
+const nonPlayerCharacters = [];
 function setup() {
-  gameScene = new Container({backgroundColor: '#b5b5b4'});
+  greetingScene = initGreetingScene();
+
+  gameScene = new Container();
   app.stage.addChild(gameScene);
   
   gameOverScene = new Container();
@@ -41,6 +47,8 @@ function setup() {
 
   const er = new Sprite(loader.resources[background].texture);
   gameScene.addChild(er); 
+  gameScene.addChild(safe); 
+  gameScene.addChild(yourself); 
 
   // const animatedSprite = new AnimatedSprite(json.animations["ahero"]);
 
@@ -74,7 +82,7 @@ function setup() {
     //Reverse the direction for the next blob  
     direction *= -1;
     //Push the blob into the `blobs` array  
-    blobs.push(blob);
+    nonPlayerCharacters.push(blob);
     //Add the blob to the `gameScene`  
     gameScene.addChild(blob);
   }
@@ -137,18 +145,18 @@ function play() {
 
   contain(sprite, CONTAINER);
    
-  blobs.forEach((blob, i) => {
+  nonPlayerCharacters.forEach((blob, i) => {
     // console.log(blobs[0].x, blobs[1].x, i);
     // const v = randomInt(0, 1);
     console.log(inddd);
-    if (checkCollisionRect(blobs[0], blobs[1]) && inddd === null) {inddd = i;
+    if (checkCollisionRect(nonPlayerCharacters[0], nonPlayerCharacters[1]) && inddd === null) {inddd = i;
       // blob.x -= sprite.x  > blob.x ? 0.5 : sprite.x == blob.x ? 0 : -0.5;
       // blob.y -= sprite.y  > blob.y ? 0.5 : sprite.y == blob.y ? 0 : -0.5;
       imt = randomInt(0, 1);
       const index = i === 0 ? 1 : 0;
       if (imt) 
-      blob.x += blob.x > blobs[index].x ? 1 : -1;
-      else blob.y += blob.y > blobs[index].y ? 1 : -1;
+      blob.x += blob.x > nonPlayerCharacters[index].x ? 1 : -1;
+      else blob.y += blob.y > nonPlayerCharacters[index].y ? 1 : -1;
     } else {
       blob.x += sprite.x  > blob.x ? v[i] : sprite.x == blob.x ? 0 : -v[i];
       blob.y += sprite.y  > blob.y ? v[i] : sprite.y == blob.y ? 0 : -v[i];
@@ -156,8 +164,8 @@ function play() {
     if (inddd === i && count < 100) {
       const index = i === 0 ? 1 : 0;
       if (imt) 
-      blob.x += blob.x > blobs[index].x ? 1 : -1
-      else blob.y += blob.y > blobs[index].y ? 1 : -1
+      blob.x += blob.x > nonPlayerCharacters[index].x ? 1 : -1
+      else blob.y += blob.y > nonPlayerCharacters[index].y ? 1 : -1
       count++;
     } 
     if (inddd === i && count === 100) {
@@ -165,54 +173,4 @@ function play() {
       inddd = null;
     }
   });
-}
-
-function contain(sprite, container) {
-  const collision = new Set();
-  //Left
-  if (sprite.x < container.x) {
-    sprite.x = container.x;
-    collision.add("left"); 
-  }
-  //Top
-  if (sprite.y < container.y) {
-    sprite.y = container.y;
-    collision.add("top");
-  }
-  //Right
-  if (sprite.x + sprite.width > container.width) {
-    sprite.x = container.width - sprite.width;
-    collision.add("right");
-  }
-  //Bottom
-  if (sprite.y + sprite.height > container.height) {
-    sprite.y = container.height - sprite.height;
-    collision.add("bottom");
-  }
-
-  return collision;
-}
-
-function checkCollisionRect(r1, r2) {
-  const collizionX = Math.min(r1.x + r1.width, r2.x + r2.width) - Math.max(r1.x, r2.x) >= 0;
-  const collizionY = Math.min(r1.y + r1.height, r2.y + r2.height) - Math.max(r1.y, r2.y) >= 0;
-  
-  return collizionX && collizionY;
-};
-
-function getAnimatedSprite(src) {
-  const texture = BaseTexture.from(src);
-
-  const frames = Array.from(Array(3), (_, i) => {
-    const size = 50;
-    const x = size * i;
-
-    return  new Texture(texture, new Rectangle(x + 0, 0, size, size));
-    
-  });
-
-  const animatedSprite = new AnimatedSprite(frames);
-  animatedSprite.animationSpeed = 0.12
-
-  return animatedSprite;
 }
