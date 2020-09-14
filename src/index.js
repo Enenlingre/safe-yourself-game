@@ -5,17 +5,19 @@ import hairy from './sprites/hairy.png';
 import bald from './sprites/bald.png';
 import background from './sprites/background.jpg';
 
-
-console.log(1);
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container.
-const app = new Application();
+const app = new Application({ width: 500, height: 500 });
 
 app.renderer.view.style.position = "absolute";
+app.renderer.view.style.left = "50%";
+app.renderer.view.style.top = "50%";
+app.renderer.view.style.transform = "translate(-50%, -50%)";
+
 app.renderer.view.style.display = "block";
-app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerHeight);
+// app.renderer.autoResize = true;
+// app.renderer.resize(window.innerWidth, window.innerHeight);
  
 // The application will create a canvas element for you that you
 // can then insert into the DOM.
@@ -31,7 +33,7 @@ let sprite, gameScene, gameOverScene;
 let state;
 const blobs = [];
 function setup() {
-  gameScene = new Container();
+  gameScene = new Container({backgroundColor: '#b5b5b4'});
   app.stage.addChild(gameScene);
   
   gameOverScene = new Container();
