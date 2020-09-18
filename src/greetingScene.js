@@ -1,5 +1,6 @@
 import { Container, Text } from 'pixi.js';
 import { GAME_WIDTH } from "./const";
+import { SceneLauncher } from './sceneLauncher';
 
 const FONT_SIZE = 60;
 
@@ -14,6 +15,14 @@ export function initGreetingScene() {
   }).forEach(textObject => {
     greetingScene.addChild(textObject); 
   });
+
+  const greetingSceneLauncher = new SceneLauncher(greetingScene);
+
+  function startGame() {
+    greetingSceneLauncher.stop();
+  }
+
+  window.addEventListener('keypress', startGame);
 
   return greetingScene;
 }

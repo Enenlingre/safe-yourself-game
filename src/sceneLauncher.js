@@ -2,21 +2,22 @@ export function SceneLauncher(scene) {
   this.scene = scene;
 }
 
-AlphaSetter.prototype = {
-  animationStep: function animationStep() {
-    this.container.alpha += this.alphaDelta;
-  
-      if (this.container.alpha !== 0 && this.container.alpha !== 1) 
-        requestAnimationFrame(animationStep);
+SceneLauncher.prototype = {
+  start: function() {
+    alphaAnimation(this.scene, 0.1);
   },
-  sceneStart: function() {
-    this.alphaDelta = 0.1;
-
-    requestAnimationFrame(this.animationStep);
-  },
-  sceneStop: function(v) {
-    this.alphaDelta = -0.1;
-
-    requestAnimationFrame(this.animationStep);
+  stop: function() {
+    alphaAnimation(this.scene, -0.1);
   }
+}
+
+function alphaAnimation(scene, delta) {
+  function animationStep() {
+    scene.alpha += delta;
+
+    if (scene.alpha !== 0 && scene.alpha !== 1) 
+        requestAnimationFrame(animationStep);
+  }
+
+  requestAnimationFrame(animationStep);
 }

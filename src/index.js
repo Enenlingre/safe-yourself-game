@@ -9,7 +9,7 @@ import bald from './sprites/bald.png';
 import background from './sprites/background.jpg';
 import { initGreetingScene } from './greetingScene';
 import { GAME_WIDTH, GAME_HEIGHT } from './const';
-import { AlphaSetter } from './dsd';
+import { SceneLauncher } from './sceneLauncher';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
@@ -42,7 +42,6 @@ function setup() {
   greetingScene = initGreetingScene();
 
   app.stage.addChild(greetingScene);
-  console.log(new AlphaSetter()) //.decrement();
 
   gameScene = new Container();
   // app.stage.addChild(gameScene);
