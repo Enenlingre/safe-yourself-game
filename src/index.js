@@ -1,4 +1,4 @@
-import { Application, Loader, Sprite, Container, Text } from 'pixi.js';
+import { Application, Loader, Sprite, Container } from 'pixi.js';
 import { getAnimatedSprite } from './getAnimatedSprite';
 import { createKeybord } from './createKeybord';
 import { contain } from './contain';
@@ -8,11 +8,13 @@ import hairy from './sprites/hairy.png';
 import bald from './sprites/bald.png';
 import background from './sprites/background.jpg';
 import { initGreetingScene } from './greetingScene';
+import { GAME_WIDTH, GAME_HEIGHT } from './const';
+import { AlphaSetter } from './dsd';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container.
-const app = new Application({ width: 500, height: 500 });
+const app = new Application({ width: GAME_WIDTH, height: GAME_HEIGHT });
 
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.left = "50%";
@@ -39,16 +41,17 @@ const nonPlayerCharacters = [];
 function setup() {
   greetingScene = initGreetingScene();
 
+  app.stage.addChild(greetingScene);
+  console.log(new AlphaSetter()) //.decrement();
+
   gameScene = new Container();
-  app.stage.addChild(gameScene);
+  // app.stage.addChild(gameScene);
   
   gameOverScene = new Container();
-  app.stage.addChild(gameOverScene);
+  // app.stage.addChild(gameOverScene);
 
   const er = new Sprite(loader.resources[background].texture);
   gameScene.addChild(er); 
-  gameScene.addChild(safe); 
-  gameScene.addChild(yourself); 
 
   // const animatedSprite = new AnimatedSprite(json.animations["ahero"]);
 
@@ -148,7 +151,7 @@ function play() {
   nonPlayerCharacters.forEach((blob, i) => {
     // console.log(blobs[0].x, blobs[1].x, i);
     // const v = randomInt(0, 1);
-    console.log(inddd);
+    // console.log(inddd);
     if (checkCollisionRect(nonPlayerCharacters[0], nonPlayerCharacters[1]) && inddd === null) {inddd = i;
       // blob.x -= sprite.x  > blob.x ? 0.5 : sprite.x == blob.x ? 0 : -0.5;
       // blob.y -= sprite.y  > blob.y ? 0.5 : sprite.y == blob.y ? 0 : -0.5;
