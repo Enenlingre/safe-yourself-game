@@ -2,6 +2,8 @@ import { Application, Loader } from 'pixi.js';
 import { init } from './init';
 import { GAME_WIDTH, GAME_HEIGHT } from './const';
 
+alert('Keyboard required to play.');
+
 window.data = {};
 const global = window.data;
 
