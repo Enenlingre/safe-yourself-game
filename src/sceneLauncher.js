@@ -15,7 +15,7 @@ function alphaAnimation(scene, delta) {
   function animationStep() {
     scene.alpha += delta;
 
-    if (scene.alpha !== 0 && scene.alpha !== 1) 
+    if (scene.alpha >=0 && scene.alpha <= 1) 
         requestAnimationFrame(animationStep);
   }
 
