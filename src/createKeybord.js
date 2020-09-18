@@ -24,10 +24,10 @@ export function createKeybord() {
   }
 
   return {
-    subscrube() {
+    subscribe() {
       window.addEventListener("keydown", handleKeyDown, false);
       window.addEventListener("keyup", handleKeyUp, false);
-      
+
       return this;
     },
     unsubscribe() {
@@ -36,17 +36,22 @@ export function createKeybord() {
 
       return this;
     },
-    addKey(code, press, release) {
-      keys[code] = { 
-        isDown: false,
-        press, 
-        release,
-      };
-      console.log(keys);
+    addKey(press, release, ...codeList) {
+      console.log(codeList);
+      codeList.forEach(code => {
+        keys[code] = { 
+          isDown: false,
+          press, 
+          release,
+        };
+      });
+
       return this;
     },
-    removeKey(code) {
-      delete keys[code];
+    removeKey(...codeList) {
+      codeList.forEach(code => {
+        delete keys[code];
+      });
 
       return this;
     }
