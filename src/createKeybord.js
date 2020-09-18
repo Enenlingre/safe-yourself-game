@@ -37,7 +37,6 @@ export function createKeybord() {
       return this;
     },
     addKey(press, release, ...codeList) {
-      console.log(codeList);
       codeList.forEach(code => {
         keys[code] = { 
           isDown: false,

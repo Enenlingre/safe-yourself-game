@@ -15,17 +15,17 @@ import { randomInt } from './randomInt';
 export function init() {
   const global = window.data;
   const { app } = global;
-  console.log(1);
+
   // start all scene initialization
   const greetingScene = initGreetingScene();
   app.stage.addChild(greetingScene);
   const greetingSceneLauncher = new SceneLauncher(greetingScene);
-  console.log(2);
+
   const gameScene = initGameScene();
   app.stage.addChild(gameScene);
   const gameSceneLauncher = new SceneLauncher(gameScene);
   global.gameSceneLauncher = gameSceneLauncher;
-  console.log(3);
+
   const { gameOverScene, score } = initGameOverScene();
   app.stage.addChild(gameOverScene);
   const gameOverSceneLauncher = new SceneLauncher(gameOverScene);
