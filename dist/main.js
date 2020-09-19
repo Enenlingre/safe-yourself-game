@@ -739,6 +739,78 @@ eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\
 
 /***/ }),
 
+/***/ "./src/checkCollisionRect.js":
+/*!***********************************!*\
+  !*** ./src/checkCollisionRect.js ***!
+  \***********************************/
+/*! exports provided: checkCollisionRect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"checkCollisionRect\", function() { return checkCollisionRect; });\nfunction checkCollisionRect(r1, r2) {\n  const collizionX = Math.min(r1.x + r1.width, r2.x + r2.width) - Math.max(r1.x, r2.x) >= 0;\n  const collizionY = Math.min(r1.y + r1.height, r2.y + r2.height) - Math.max(r1.y, r2.y) >= 0;\n  \n  return collizionX && collizionY;\n};\n\n\n//# sourceURL=webpack:///./src/checkCollisionRect.js?");
+
+/***/ }),
+
+/***/ "./src/const.js":
+/*!**********************!*\
+  !*** ./src/const.js ***!
+  \**********************/
+/*! exports provided: GAME_WIDTH, GAME_HEIGHT, GAME_MARGIN, FONT_SIZE, CONTAINER, NON_HERO_V, NON_HERO_COLLISION_DELAY, HERO_V */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"GAME_WIDTH\", function() { return GAME_WIDTH; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"GAME_HEIGHT\", function() { return GAME_HEIGHT; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"GAME_MARGIN\", function() { return GAME_MARGIN; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"FONT_SIZE\", function() { return FONT_SIZE; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"CONTAINER\", function() { return CONTAINER; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"NON_HERO_V\", function() { return NON_HERO_V; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"NON_HERO_COLLISION_DELAY\", function() { return NON_HERO_COLLISION_DELAY; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"HERO_V\", function() { return HERO_V; });\nconst GAME_WIDTH = 500;\nconst GAME_HEIGHT = 500;\nconst GAME_MARGIN = 20;\nconst FONT_SIZE = 60;\n\n// used for the contain function. \n// since the sprites are not square, \n// here the values ​​are different from GAME_WIDTH - GAME_MARGIN\nconst CONTAINER = { x: 5, y: 10, height: 490, width: 495 };\n\nconst NON_HERO_V = 1;\nconst NON_HERO_COLLISION_DELAY = 100;\nconst HERO_V = 2;\n\n\n//# sourceURL=webpack:///./src/const.js?");
+
+/***/ }),
+
+/***/ "./src/contain.js":
+/*!************************!*\
+  !*** ./src/contain.js ***!
+  \************************/
+/*! exports provided: contain */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"contain\", function() { return contain; });\nfunction contain(sprite, container) {\n  const collision = new Set();\n  // Left\n  if (sprite.x < container.x) {\n    sprite.x = container.x;\n    collision.add(\"left\"); \n  }\n  // Top\n  if (sprite.y < container.y) {\n    sprite.y = container.y;\n    collision.add(\"top\");\n  }\n  // Right\n  if (sprite.x + sprite.width > container.width) {\n    sprite.x = container.width - sprite.width;\n    collision.add(\"right\");\n  }\n  // Bottom\n  if (sprite.y + sprite.height > container.height) {\n    sprite.y = container.height - sprite.height;\n    collision.add(\"bottom\");\n  }\n\n  return collision;\n}\n\n\n//# sourceURL=webpack:///./src/contain.js?");
+
+/***/ }),
+
+/***/ "./src/createKeybord.js":
+/*!******************************!*\
+  !*** ./src/createKeybord.js ***!
+  \******************************/
+/*! exports provided: createKeybord */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"createKeybord\", function() { return createKeybord; });\nfunction createKeybord() {\n  const keys = {};\n\n  function checkPressedKey(code) {\n    return Boolean(keys[code] && keys[code].isDown);\n  }\n\n  function handleKeyDown(e) {\n    const key = keys[e.code];\n\n    if (key && !key.isDown) {\n      key.isDown = !key.isDown;\n      key.press();\n    }\n  }\n\n  function handleKeyUp(e) {\n    const key = keys[e.code];\n\n    if (key && key.isDown) {\n      key.isDown = !key.isDown;\n      key.release();\n    }\n  }\n\n  return {\n    subscribe() {\n      window.addEventListener(\"keydown\", handleKeyDown, false);\n      window.addEventListener(\"keyup\", handleKeyUp, false);\n\n      return this;\n    },\n    unsubscribe() {\n      window.removeEventListener(\"keydown\", handleKeyDown);\n      window.removeEventListener(\"keyup\", handleKeyUp);\n\n      return this;\n    },\n    addKey(press, release, ...codeList) {\n      codeList.forEach(code => {\n        keys[code] = { \n          isDown: false,\n          press, \n          release,\n        };\n      });\n\n      return this;\n    },\n    removeKey(...codeList) {\n      codeList.forEach(code => {\n        delete keys[code];\n      });\n\n      return this;\n    }\n  }\n}\n\n\n//# sourceURL=webpack:///./src/createKeybord.js?");
+
+/***/ }),
+
+/***/ "./src/end.js":
+/*!********************!*\
+  !*** ./src/end.js ***!
+  \********************/
+/*! exports provided: end */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"end\", function() { return end; });\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const */ \"./src/const.js\");\n/* harmony import */ var _waiting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./waiting */ \"./src/waiting.js\");\n/* harmony import */ var _setup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./setup */ \"./src/setup.js\");\n\n\n\n\nfunction end() {\n  const global = window.data;\n  const { gameStartTime, score, gameSceneLauncher, gameOverSceneLauncher } = global;\n\n  score.text = `${Math.ceil((performance.now() - gameStartTime) / 1000)}s`;\n  score.x = (_const__WEBPACK_IMPORTED_MODULE_0__[\"GAME_WIDTH\"] - score.width) / 2;\n\n  gameSceneLauncher.stop();\n  gameOverSceneLauncher.start();\n\n  function startGame() {\n    gameOverSceneLauncher.stop();\n    gameSceneLauncher.start();\n    global.state = _setup__WEBPACK_IMPORTED_MODULE_2__[\"setup\"];\n\n    window.removeEventListener('keypress', startGame);\n  }\n\n  setTimeout(function() {\n    window.addEventListener('keypress', startGame);\n  }, 500);\n\n  global.state = _waiting__WEBPACK_IMPORTED_MODULE_1__[\"waiting\"];\n}\n\n\n//# sourceURL=webpack:///./src/end.js?");
+
+/***/ }),
+
+/***/ "./src/getAnimatedSprite.js":
+/*!**********************************!*\
+  !*** ./src/getAnimatedSprite.js ***!
+  \**********************************/
+/*! exports provided: getAnimatedSprite */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getAnimatedSprite\", function() { return getAnimatedSprite; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n\n\nfunction getAnimatedSprite(src) {\n  const texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"BaseTexture\"].from(src);\n\n  const frames = Array.from(Array(3), (_, i) => {\n    const size = 50;\n    const x = size * i;\n\n    return new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Texture\"](texture, new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Rectangle\"](x + 0, 0, size, size));\n    \n  });\n\n  const animatedSprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"AnimatedSprite\"](frames);\n  animatedSprite.animationSpeed = 0.12\n\n  return animatedSprite;\n}\n\n\n//# sourceURL=webpack:///./src/getAnimatedSprite.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -747,7 +819,139 @@ eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n\n// import hero from './hero.png';\n\n\nconsole.log(1);\n// The application will create a renderer using WebGL, if possible,\n// with a fallback to a canvas render. It will also setup the ticker\n// and the root stage PIXI.Container.\nconst app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Application\"]();\n\napp.renderer.view.style.position = \"absolute\";\napp.renderer.view.style.display = \"block\";\napp.renderer.autoResize = true;\napp.renderer.resize(window.innerWidth, window.innerHeight);\n \n// The application will create a canvas element for you that you\n// can then insert into the DOM.\ndocument.body.appendChild(app.view);\n\nconst loader = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Loader\"]();\n\nloader.add('./hero.png')\n  .load(setup);\n\nfunction setup() {\n  let sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Sprite\"](\n    loader.resources['/Users/develop/Documents/save-yourself-game/dist/hero.png'].texture\n  );\n}\n \n// // load the texture we need\n// PIXI.loader.add('ss','/Users/develop/Documents/save-yourself-game/dist/hero.png').load((loader, resources) => {\n \n//     // This creates a texture from a 'bunny.png' image.\n//     const bunny = new PIXI.Sprite(resources['/Users/develop/Documents/save-yourself-game/dist/hero.png'].texture);\n \n//     // Setup the position of the bunny\n//     bunny.x = app.renderer.width / 2;\n//     bunny.y = app.renderer.height / 2;\n \n//     // Rotate around the center\n//     bunny.anchor.x = 0.5;\n//     bunny.anchor.y = 0.5;\n \n//     // Add the bunny to the scene we are building.\n//     app.stage.addChild(bunny);\n \n//     // Listen for frame updates\n//     app.ticker.add(() => {\n//          // each frame we spin the bunny around a bit\n//         bunny.rotation += 0.01;\n//     });\n// });\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n/* harmony import */ var _init__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./init */ \"./src/init.js\");\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./const */ \"./src/const.js\");\n\n\n\n\nalert('Keyboard required to play.');\n\nwindow.data = {};\nconst global = window.data;\n\nconst app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Application\"]({ width: _const__WEBPACK_IMPORTED_MODULE_2__[\"GAME_WIDTH\"], height: _const__WEBPACK_IMPORTED_MODULE_2__[\"GAME_HEIGHT\"] });\nglobal.app = app;\n\napp.renderer.view.style.position = \"absolute\";\napp.renderer.view.style.left = \"50%\";\napp.renderer.view.style.top = \"50%\";\napp.renderer.view.style.transform = \"translate(-50%, -50%)\";\n\ndocument.body.appendChild(app.view);\n\nconst loader = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Loader\"]();\n\nloader.load(_init__WEBPACK_IMPORTED_MODULE_1__[\"init\"]);\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/init.js":
+/*!*********************!*\
+  !*** ./src/init.js ***!
+  \*********************/
+/*! exports provided: init */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"init\", function() { return init; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n/* harmony import */ var _sprites_hero_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sprites/hero.png */ \"./src/sprites/hero.png\");\n/* harmony import */ var _sprites_hairy_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sprites/hairy.png */ \"./src/sprites/hairy.png\");\n/* harmony import */ var _sprites_bald_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sprites/bald.png */ \"./src/sprites/bald.png\");\n/* harmony import */ var _sprites_blood_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sprites/blood.png */ \"./src/sprites/blood.png\");\n/* harmony import */ var _sprites_background_jpg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sprites/background.jpg */ \"./src/sprites/background.jpg\");\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./const */ \"./src/const.js\");\n/* harmony import */ var _sceneLauncher__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sceneLauncher */ \"./src/sceneLauncher.js\");\n/* harmony import */ var _getAnimatedSprite__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./getAnimatedSprite */ \"./src/getAnimatedSprite.js\");\n/* harmony import */ var _createKeybord__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./createKeybord */ \"./src/createKeybord.js\");\n/* harmony import */ var _setup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./setup */ \"./src/setup.js\");\n/* harmony import */ var _waiting__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./waiting */ \"./src/waiting.js\");\n/* harmony import */ var _randomInt__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./randomInt */ \"./src/randomInt.js\");\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfunction init() {\n  const global = window.data;\n  const { app } = global;\n\n  // start all scene initialization\n  const greetingScene = initGreetingScene();\n  app.stage.addChild(greetingScene);\n  const greetingSceneLauncher = new _sceneLauncher__WEBPACK_IMPORTED_MODULE_7__[\"SceneLauncher\"](greetingScene);\n\n  const gameScene = initGameScene();\n  app.stage.addChild(gameScene);\n  const gameSceneLauncher = new _sceneLauncher__WEBPACK_IMPORTED_MODULE_7__[\"SceneLauncher\"](gameScene);\n  global.gameSceneLauncher = gameSceneLauncher;\n\n  const { gameOverScene, score } = initGameOverScene();\n  app.stage.addChild(gameOverScene);\n  const gameOverSceneLauncher = new _sceneLauncher__WEBPACK_IMPORTED_MODULE_7__[\"SceneLauncher\"](gameOverScene);\n  global.score = score;\n  global.gameOverSceneLauncher = gameOverSceneLauncher;\n  // end scene initialization\n\n  function startGame() {\n    greetingSceneLauncher.stop();\n    gameSceneLauncher.start();\n    global.state = _setup__WEBPACK_IMPORTED_MODULE_10__[\"setup\"];\n\n    window.removeEventListener('keypress', startGame);\n  }\n\n  window.addEventListener('keypress', startGame);\n\n  global.state = _waiting__WEBPACK_IMPORTED_MODULE_11__[\"waiting\"];\n\n  app.ticker.add(delta => gameLoop(delta));\n}\n\nfunction initGreetingScene() {\n  const greetingScene =  new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Container\"]();\n\n  const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Graphics\"]();\n  graphics.beginFill(0x333831);\n  graphics.drawRect(0, 0, _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_WIDTH\"], _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_HEIGHT\"]);\n  graphics.endFill();\n  greetingScene.addChild(graphics);\n  \n  ['SAFE', 'YOURSELF', 'GAME'].map((text, i) => {\n    const textObject = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Text\"](text, { fontSize: _const__WEBPACK_IMPORTED_MODULE_6__[\"FONT_SIZE\"], fill: \"red\" });\n    textObject.position = { x: (_const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_WIDTH\"] - textObject.width) / 2, y:  (i + 1) * _const__WEBPACK_IMPORTED_MODULE_6__[\"FONT_SIZE\"] };\n    \n    return textObject;\n  }).forEach(textObject => {\n    greetingScene.addChild(textObject); \n  });\n\n  return greetingScene;\n}\n\nfunction initGameScene() {\n  const global = window.data;\n\n  const gameScene = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Container\"]();\n  gameScene.alpha = 0;\n\n  // start all sprite initialization\n  const background = pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Sprite\"].from(_sprites_background_jpg__WEBPACK_IMPORTED_MODULE_5__[\"default\"]);\n  gameScene.addChild(background); \n\n  const hero = Object(_getAnimatedSprite__WEBPACK_IMPORTED_MODULE_8__[\"getAnimatedSprite\"])(_sprites_hero_png__WEBPACK_IMPORTED_MODULE_1__[\"default\"]);\n  gameScene.addChild(hero);\n  global.hero = hero;\n\n  const nonHeroes = [_sprites_hairy_png__WEBPACK_IMPORTED_MODULE_2__[\"default\"], _sprites_bald_png__WEBPACK_IMPORTED_MODULE_3__[\"default\"]].map(image => {\n    const sprite = Object(_getAnimatedSprite__WEBPACK_IMPORTED_MODULE_8__[\"getAnimatedSprite\"])(image)\n    sprite.play();\n    gameScene.addChild(sprite);\n    return sprite;\n  });\n  global.nonHeroes = nonHeroes;\n\n\n  const bloodContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Container\"]();\n  gameScene.addChild(bloodContainer);\n\n  let i;\n  const bloods = [];\n  global.bloods = bloods;\n\n  for (i = 0; i < 100; i++) {\n    const blood = pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Sprite\"].from(_sprites_blood_png__WEBPACK_IMPORTED_MODULE_4__[\"default\"]);\n\n    blood.x = Object(_randomInt__WEBPACK_IMPORTED_MODULE_12__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_MARGIN\"], _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_WIDTH\"] - _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_MARGIN\"]);\n    blood.y = Object(_randomInt__WEBPACK_IMPORTED_MODULE_12__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_MARGIN\"], _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_HEIGHT\"] - _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_MARGIN\"]);\n    blood.scale = { x: 0.5, y: 0.5 };\n    blood.alpha = 0.5;\n\n    bloods.push(blood);\n    bloodContainer.addChild(blood);\n  }\n  // end all sprite initialization\n\n  global.gameSceneKeybord = Object(_createKeybord__WEBPACK_IMPORTED_MODULE_9__[\"createKeybord\"])()\n    .addKey(() => {\n      hero.vy = -_const__WEBPACK_IMPORTED_MODULE_6__[\"HERO_V\"];\n      hero.play();\n    }, () => {\n      hero.vy = 0;\n      hero.stop();\n    },\n    'KeyW', 'ArrowUp')\n    .addKey(() => {\n      hero.vy = _const__WEBPACK_IMPORTED_MODULE_6__[\"HERO_V\"];\n      hero.play();\n    }, () => {\n      hero.vy = 0;\n      hero.stop();\n    },\n    'KeyS', 'ArrowDown')\n    .addKey(() => {\n      hero.vx = -_const__WEBPACK_IMPORTED_MODULE_6__[\"HERO_V\"];\n      hero.play();\n    }, () => {\n      hero.vx = 0;\n      hero.stop();\n    }, \n    'KeyA', 'ArrowLeft')\n    .addKey(() => {\n      hero.vx = _const__WEBPACK_IMPORTED_MODULE_6__[\"HERO_V\"];\n      hero.play();\n    }, () => {\n      hero.vx = 0;\n      hero.stop();\n    },\n    'KeyD', 'ArrowRight');\n\n    return gameScene;\n}\n\nfunction initGameOverScene() {\n  const gameOverScene = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Container\"]();\n  gameOverScene.alpha = 0;\n\n  const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Graphics\"]();\n  graphics.beginFill(0x333831);\n  graphics.drawRect(0, 0, _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_WIDTH\"], _const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_HEIGHT\"]);\n  graphics.endFill();\n  gameOverScene.addChild(graphics);\n\n  let score;\n  ['YOU', 'DEAD', 'you score:', '0'].map((text, i) => {\n    const textObject = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Text\"](text, { fontSize: _const__WEBPACK_IMPORTED_MODULE_6__[\"FONT_SIZE\"], fill: \"red\" });\n    textObject.position = { \n      x: (_const__WEBPACK_IMPORTED_MODULE_6__[\"GAME_WIDTH\"] - textObject.width) / 2, \n      y:  (i + 1) * _const__WEBPACK_IMPORTED_MODULE_6__[\"FONT_SIZE\"] + (i > 1 ? _const__WEBPACK_IMPORTED_MODULE_6__[\"FONT_SIZE\"] : 0) \n    };\n    \n    return textObject;\n  }).forEach((textObject, i) => {\n    gameOverScene.addChild(textObject); \n\n    if (i === 3) score = textObject;\n  });\n\n  return { gameOverScene, score };\n}\n\nfunction gameLoop(delta){\n  const global = window.data;\n  const { state } = global;\n\n  state(delta);\n}\n\n\n//# sourceURL=webpack:///./src/init.js?");
+
+/***/ }),
+
+/***/ "./src/play.js":
+/*!*********************!*\
+  !*** ./src/play.js ***!
+  \*********************/
+/*! exports provided: play */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"play\", function() { return play; });\n/* harmony import */ var _contain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./contain */ \"./src/contain.js\");\n/* harmony import */ var _end__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./end */ \"./src/end.js\");\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./const */ \"./src/const.js\");\n/* harmony import */ var _randomInt__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./randomInt */ \"./src/randomInt.js\");\n/* harmony import */ var _checkCollisionRect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./checkCollisionRect */ \"./src/checkCollisionRect.js\");\n\n\n\n\n\n\nlet nonHeroCollision = false;\n\nfunction play() {\n  const global = window.data;\n  const { hero, nonHeroes, bloods } = global;\n\n  hero.x += hero.vx;\n  hero.y += hero.vy;\n\n  Object(_contain__WEBPACK_IMPORTED_MODULE_0__[\"contain\"])(hero, _const__WEBPACK_IMPORTED_MODULE_2__[\"CONTAINER\"]);\n\n  bloods.forEach(blood => {\n    if (blood.y >= _const__WEBPACK_IMPORTED_MODULE_2__[\"GAME_HEIGHT\"] - _const__WEBPACK_IMPORTED_MODULE_2__[\"GAME_MARGIN\"]) blood.y = _const__WEBPACK_IMPORTED_MODULE_2__[\"GAME_MARGIN\"];\n    blood.y += (0.1 * Object(_randomInt__WEBPACK_IMPORTED_MODULE_3__[\"randomInt\"])(0, 10));\n  })\n\n  nonHeroes.forEach((nonHero, i) => {\n    // hack to shrink to fit sprite\n    const nonHeroShrink = { \n      x: nonHero.x - 20,\n      y: nonHero.y - 10,\n      width: nonHero.width - 20,\n      height: nonHero.height - 5,\n    };\n    // hack to shrink to fit sprite\n    const heroShrink = { \n      x: hero.x - 20,\n      y: hero.y - 10,\n      width: hero.width - 20,\n      height: hero.height - 5,\n    };\n    if (Object(_checkCollisionRect__WEBPACK_IMPORTED_MODULE_4__[\"checkCollisionRect\"])(nonHeroShrink, heroShrink)) {\n      global.state = _end__WEBPACK_IMPORTED_MODULE_1__[\"end\"];\n      return;\n    }\n\n    const anotherNonHeroIndex = i === 0 ? 1 : 0;\n\n    if (nonHero.wasCollision) {\n      changeSpeed(nonHero, nonHeroes[anotherNonHeroIndex], hero);\n    } else if (Object(_checkCollisionRect__WEBPACK_IMPORTED_MODULE_4__[\"checkCollisionRect\"])(nonHeroes[0], nonHeroes[1]) && !nonHeroCollision) {\n      nonHero.wasCollision = _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_COLLISION_DELAY\"];\n      nonHeroCollision = true;\n\n      nonHero.x += nonHero.x  > nonHeroes[anotherNonHeroIndex].x ? _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] : -_const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"];\n      nonHero.y += nonHero.y  > nonHeroes[anotherNonHeroIndex].y ? _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] : -_const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"];\n    } else {\n      nonHero.x += hero.x  > nonHero.x ? _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] : -_const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"];\n      nonHero.y += hero.y  > nonHero.y ? _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] : -_const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"];\n    }\n  });\n}\n\nconst directions = ['x', 'y'];\nlet delta = 0\nlet direction = directions[Object(_randomInt__WEBPACK_IMPORTED_MODULE_3__[\"randomInt\"])(0, 1)];\n\nfunction changeSpeed(nonHero, anotherNonHero, hero) {\n  if (delta) {\n    nonHero[direction] += delta;\n  } else if (nonHero[direction] > anotherNonHero[direction]) {\n    delta += nonHero[direction] < hero[direction] ? _const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] * 2 : 0;\n  } else {\n    delta += nonHero[direction] < hero[direction] ? 0 : -_const__WEBPACK_IMPORTED_MODULE_2__[\"NON_HERO_V\"] * 2;\n  };\n\n  nonHero.wasCollision--;\n  if (!nonHero.wasCollision)  {\n    nonHeroCollision = false;\n    delta = 0;\n    direction = directions[Object(_randomInt__WEBPACK_IMPORTED_MODULE_3__[\"randomInt\"])(0, 1)];\n  }\n\n  Object(_contain__WEBPACK_IMPORTED_MODULE_0__[\"contain\"])(nonHero, _const__WEBPACK_IMPORTED_MODULE_2__[\"CONTAINER\"]);\n}\n\n\n//# sourceURL=webpack:///./src/play.js?");
+
+/***/ }),
+
+/***/ "./src/randomInt.js":
+/*!**************************!*\
+  !*** ./src/randomInt.js ***!
+  \**************************/
+/*! exports provided: randomInt */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"randomInt\", function() { return randomInt; });\nfunction randomInt(min, max) {\n  return Math.floor(Math.random() * (max - min + 1)) + min;\n}\n\n\n//# sourceURL=webpack:///./src/randomInt.js?");
+
+/***/ }),
+
+/***/ "./src/sceneLauncher.js":
+/*!******************************!*\
+  !*** ./src/sceneLauncher.js ***!
+  \******************************/
+/*! exports provided: SceneLauncher */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"SceneLauncher\", function() { return SceneLauncher; });\nfunction SceneLauncher(scene) {\n  this.scene = scene;\n}\n\nSceneLauncher.prototype = {\n  start: function() {\n    alphaAnimation(this.scene, 0.1);\n  },\n  stop: function() {\n    alphaAnimation(this.scene, -0.1);\n  }\n}\n\nfunction alphaAnimation(scene, delta) {\n  function animationStep() {\n    scene.alpha += delta;\n\n    if (scene.alpha >=0 && scene.alpha <= 1) \n        requestAnimationFrame(animationStep);\n  }\n\n  requestAnimationFrame(animationStep);\n}\n\n//# sourceURL=webpack:///./src/sceneLauncher.js?");
+
+/***/ }),
+
+/***/ "./src/setup.js":
+/*!**********************!*\
+  !*** ./src/setup.js ***!
+  \**********************/
+/*! exports provided: setup */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"setup\", function() { return setup; });\n/* harmony import */ var _randomInt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./randomInt */ \"./src/randomInt.js\");\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./const */ \"./src/const.js\");\n/* harmony import */ var _play__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./play */ \"./src/play.js\");\n\n\n\n\nfunction setup() {\n  const global = window.data;\n  const { hero, nonHeroes, gameSceneKeybord } = global;\n\n  hero.vx = 0;\n  hero.vy = 0;\n\n  hero.x = Object(_randomInt__WEBPACK_IMPORTED_MODULE_0__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"], _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_WIDTH\"] - hero.width - _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"]);\n  hero.y = Object(_randomInt__WEBPACK_IMPORTED_MODULE_0__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"], (_const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_HEIGHT\"] / 2) - hero.height - _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"]);\n\n  nonHeroes.forEach(nonHero => {\n    nonHero.x = Object(_randomInt__WEBPACK_IMPORTED_MODULE_0__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"], _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_WIDTH\"] - nonHero.width - _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"]);\n    nonHero.y = Object(_randomInt__WEBPACK_IMPORTED_MODULE_0__[\"randomInt\"])(_const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_HEIGHT\"] / 2, _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_HEIGHT\"] - nonHero.height - _const__WEBPACK_IMPORTED_MODULE_1__[\"GAME_MARGIN\"]);\n  });\n\n  gameSceneKeybord.subscribe();\n\n  global.gameStartTime = performance.now();\n  \n  global.state = _play__WEBPACK_IMPORTED_MODULE_2__[\"play\"];\n}\n\n//# sourceURL=webpack:///./src/setup.js?");
+
+/***/ }),
+
+/***/ "./src/sprites/background.jpg":
+/*!************************************!*\
+  !*** ./src/sprites/background.jpg ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"c9a8f96694cacb81a53e9d337aa4b08d.jpg\");\n\n//# sourceURL=webpack:///./src/sprites/background.jpg?");
+
+/***/ }),
+
+/***/ "./src/sprites/bald.png":
+/*!******************************!*\
+  !*** ./src/sprites/bald.png ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"881c9710f0ba7512677c038ec54eee14.png\");\n\n//# sourceURL=webpack:///./src/sprites/bald.png?");
+
+/***/ }),
+
+/***/ "./src/sprites/blood.png":
+/*!*******************************!*\
+  !*** ./src/sprites/blood.png ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"4c738530743937de96ae659bdb35504c.png\");\n\n//# sourceURL=webpack:///./src/sprites/blood.png?");
+
+/***/ }),
+
+/***/ "./src/sprites/hairy.png":
+/*!*******************************!*\
+  !*** ./src/sprites/hairy.png ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"b1680b4f2aa699d58e18b473616e264b.png\");\n\n//# sourceURL=webpack:///./src/sprites/hairy.png?");
+
+/***/ }),
+
+/***/ "./src/sprites/hero.png":
+/*!******************************!*\
+  !*** ./src/sprites/hero.png ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"268dd14564c3a65896e4770639f614c9.png\");\n\n//# sourceURL=webpack:///./src/sprites/hero.png?");
+
+/***/ }),
+
+/***/ "./src/waiting.js":
+/*!************************!*\
+  !*** ./src/waiting.js ***!
+  \************************/
+/*! exports provided: waiting */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"waiting\", function() { return waiting; });\nfunction waiting() {\n  \n}\n\n//# sourceURL=webpack:///./src/waiting.js?");
 
 /***/ })
 
