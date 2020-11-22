@@ -160,7 +160,7 @@ function initGameOverScene() {
   gameOverScene.addChild(graphics);
 
   let score;
-  ['YOU', 'DEAD', 'you score:', '0'].map((text, i) => {
+  ['GAME', 'OVER', 'you score:', '0'].map((text, i) => {
     const textObject = new Text(text, { fontSize: FONT_SIZE, fill: "red" });
     textObject.position = { 
       x: (GAME_WIDTH - textObject.width) / 2, 
